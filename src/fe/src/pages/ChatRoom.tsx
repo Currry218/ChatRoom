@@ -1,13 +1,20 @@
 import React from "react";
-
+import ChatContent from "../components/chat_room/ChatContent";
+import ChatRoomInfo from "../components/chat_room/ChatRoomInfo";
+import ChatRoomList from "../components/chat_room/ChatRoomList";
 const ChatRoom = () => {
   return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-800 text-white text-center px-4">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Welcome to Chat Room{" "}
-        </h1>
-        
+    <div className="flex flex-row h-[90vh] w-full ">
+      <div className="flex flex-row h-full w-[25vw]">
+        <ChatRoomList />
       </div>
+      <div className="flex flex-row h-full flex-1">
+        <ChatContent />
+      </div>
+      <div className="flex flex-row h-full w-[20vw]">
+        <ChatRoomInfo />
+      </div>
+    </div>
   );
 };
 export default ChatRoom;

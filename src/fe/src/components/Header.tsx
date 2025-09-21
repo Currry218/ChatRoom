@@ -14,15 +14,19 @@ const toggleTheme = () => {
 
 export default function Header() {
   return (
-    <header className="p-3 mb-1 flex gap-4 items-center shadow-sm header-des dark:dark-header-des">
+    <header className="p-3 flex gap-4 items-center shadow-sm header-des dark:dark-header-des h-[10vh]">
       <div className="flex items-center gap-2">
         <img src="/open.png" alt="logo" className="w-10 h-10" />
         <h1 className="font-bold text-lg">Chat Room</h1>
       </div>
 
       <nav className="flex gap-3">
-        <Link to="/" className="hover:underline">Home</Link>
-        <Link to="/chatroom" className="hover:underline">ChatRoom</Link>
+        <Link to="/" className="hover:underline">
+          Home
+        </Link>
+        <Link to="/chatroom" className="hover:underline">
+          ChatRoom
+        </Link>
       </nav>
 
       <div className="flex-1" />
