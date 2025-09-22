@@ -6,13 +6,13 @@ export class User extends Document {
   @Prop({ required: true, unique: true })
   username: string;
 
-  @Prop({ required: true }) // store hashed password
+  @Prop({ required: true })
   password: string;
 
   @Prop()
-  avatar: string; // URL to storage
+  avatar?: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, required: true })
   email: string;
 
   @Prop({ enum: ['male', 'female', 'other'], default: 'other' })
