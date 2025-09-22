@@ -6,7 +6,7 @@ export class CreateMemberDto {
   readonly roomId: string;
 
   @IsString()
-  readonly userId: string;
+  readonly username: string;
 
   @IsEnum(['member', 'admin', 'owner'])
   readonly role: 'member' | 'admin' | 'owner';

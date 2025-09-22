@@ -7,7 +7,7 @@ export class Member extends Document {
   roomId: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  userId: string;
+  username: string;
 
   @Prop({ enum: ['member', 'admin', 'owner'], default: 'member' })
   role: string;
@@ -21,7 +21,7 @@ export class Member extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Message' })
   lastSeenMsgId: string;
 
-  @Prop()
+  @Prop({ default: Date.now })
   lastSeenAt: Date;
 }
 
