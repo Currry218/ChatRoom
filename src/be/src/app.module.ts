@@ -1,10 +1,11 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ChatRoomModule } from './chatroom/chatroom.module';
 import { MessageModule } from './message/message.module';
@@ -24,12 +25,8 @@ import { Message, MessageSchema } from './message/message.schema';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        uri: `mongodb+srv://${config.get<string>('DB_USERNAME')}:${config.get<string>('DB_PASSWORD')}@chatroom.lvpnew9.mongodb.net/`,
-        // uri: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@chatroom.lvpnew9.mongodb.net/`,
-
-        // connectionName: 'chatroom',
-        // dbName: 'chatroom',
+      useFactory: async (config: ConfigService) => ({
+        uri: config.get<string>('DB_URI'),
       }),
     }),
     MongooseModule.forFeature([
@@ -38,6 +35,7 @@ import { Message, MessageSchema } from './message/message.schema';
       { name: Message.name, schema: MessageSchema },
       { name: Member.name, schema: MemberSchema },
     ]),
+    AuthModule,
     UserModule,
     ChatRoomModule,
     MessageModule,
@@ -46,13 +44,4 @@ import { Message, MessageSchema } from './message/message.schema';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements OnModuleInit {
-  constructor(private config: ConfigService) {}
-
-  onModuleInit() {
-    console.log('✅ ENV CHECK:');
-    console.log('DB_USERNAME:', process.env.DB_USERNAME);
-    console.log('DB_PASSWORD:', this.config.get('DB_PASSWORD'));
-    console.log('DB_NAME:', this.config.get('DB_NAME'));
-  }
-}
+export class AppModule {}
