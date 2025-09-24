@@ -17,6 +17,9 @@ export class ChatRoom extends Document {
 
   @Prop()
   currentMember: string[];
+
+  @Prop({ default: false })
+  isDirect: boolean;
 }
 
 export const ChatRoomSchema = SchemaFactory.createForClass(ChatRoom);

@@ -13,7 +13,22 @@ export class MemberService {
   ) {}
 
   async create(dto: CreateMemberDto): Promise<Member> {
-    const member = new this.memberModel(dto);
+    // fetch user info
+    const user = await this.userService.findByUsername(dto.username);
+    if (!user) {
+      throw new NotFoundException(`User ${dto.username} not found`);
+    }
+
+    // build member with user info
+    const member = new this.memberModel({
+      roomId: dto.roomId,
+      username: dto.username,
+      avatar: user.avatar,
+      role: dto.role ?? 'member',
+      joinedAt: new Date(),
+      isNotHere: false,
+    });
+
     return member.save();
   }
 

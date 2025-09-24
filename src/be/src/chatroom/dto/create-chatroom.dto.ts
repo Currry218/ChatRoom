@@ -1,13 +1,12 @@
 // dto/create-chatroom.dto.ts
-import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsString } from 'class-validator';
 
 export class CreateChatRoomDto {
   @IsString()
   readonly name: string;
 
-  @IsOptional()
   @IsString()
-  readonly avatar?: string;
+  readonly avatar: string;
 
   @IsBoolean()
   readonly isPublic: boolean;
@@ -15,7 +14,9 @@ export class CreateChatRoomDto {
   @IsString()
   readonly owner: string; // User.ID
 
-  @IsOptional()
   @IsArray()
-  readonly currentMember?: string[]; // Array of User.ID
+  readonly currentMember: string[]; // Array of User.ID
+
+  @IsBoolean()
+  readonly isDirect: boolean;
 }

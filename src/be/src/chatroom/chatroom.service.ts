@@ -16,8 +16,16 @@ export class ChatRoomService {
   ) {}
 
   async create(dto: CreateChatRoomDto): Promise<ChatRoom> {
-    const created = new this.chatroomModel(dto);
-    return created.save();
+    const createdRoom = new this.chatroomModel(dto);
+    const savedRoom = await createdRoom.save();
+
+    await this.memberService.create({
+      roomId: savedRoom._id.toString(),
+      username: dto.owner,
+      role: 'owner',
+    });
+
+    return savedRoom;
   }
 
   async findAll(): Promise<ChatRoom[]> {
