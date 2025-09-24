@@ -11,22 +11,37 @@ export class MessageService {
   ) {}
 
   async create(dto: CreateMessageDto): Promise<Message> {
-    const newMsg = new this.messageModel(dto);
-    return newMsg.save();
+    const message = new this.messageModel(dto);
+    return message.save();
   }
 
   async findAll(): Promise<Message[]> {
     return this.messageModel.find().exec();
   }
 
-  async findByRoomId(roomId: string): Promise<Message[]> {
-    return this.messageModel.find({ roomId }).exec();
+  async findOne(id: string): Promise<Message> {
+    const message = await this.messageModel.findById(id).exec();
+    if (!message)
+      throw new NotFoundException(`Message with id ${id} not found`);
+    return message;
   }
 
-  async findOne(id: string): Promise<Message> {
-    const msg = await this.messageModel.findById(id).exec();
-    if (!msg) throw new NotFoundException(`Message with id ${id} not found`);
-    return msg;
+  async findByRoomId(roomId: string): Promise<Message[]> {
+    return this.messageModel.find({ roomId }).lean().exec();
+  }
+
+  async getMessagesByRoom(
+    roomId: string,
+    start = 0,
+    end = 25,
+  ): Promise<Message[]> {
+    return this.messageModel
+      .find({ roomId })
+      .sort({ createdAt: 1 })
+      .skip(start)
+      .limit(end - start)
+      .lean()
+      .exec();
   }
 
   async update(id: string, dto: Partial<CreateMessageDto>): Promise<Message> {
@@ -36,6 +51,31 @@ export class MessageService {
     if (!updated)
       throw new NotFoundException(`Message with id ${id} not found`);
     return updated;
+  }
+
+  // Lazy-load messages
+  async findMessagesByRoomId(
+    roomId: string,
+    start: number,
+    end: number,
+  ): Promise<Message[]> {
+    return this.messageModel
+      .find({ roomId })
+      .sort({ createdAt: 1 }) // oldest first, you can reverse on frontend if needed
+      .skip(start)
+      .limit(end - start)
+      .lean()
+      .exec();
+  }
+
+  async findLatestByRoomId(roomId: string): Promise<Message | null> {
+    const latestMessage = await this.messageModel
+      .findOne({ roomId }) // filter by roomId
+      // .select('content')
+      // .sort({ createdAt: -1 }) // latest first
+      .lean() // plain JS object
+      .exec();
+    return latestMessage;
   }
 
   async remove(id: string): Promise<void> {

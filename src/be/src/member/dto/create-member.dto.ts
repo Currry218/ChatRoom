@@ -8,6 +8,9 @@ export class CreateMemberDto {
   @IsString()
   readonly username: string;
 
+  @IsString()
+  readonly avatar: string;
+
   @IsEnum(['member', 'admin', 'owner'])
   readonly role: 'member' | 'admin' | 'owner';
 

@@ -11,7 +11,6 @@ export class CreateMessageDto {
   @IsEnum(['text', 'image', 'file', 'system'])
   readonly type: 'text' | 'image' | 'file' | 'system';
 
-  @IsOptional()
   @IsString()
-  readonly content?: string;
+  readonly content: string;
 }

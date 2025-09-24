@@ -12,7 +12,7 @@ export class Message extends Document {
   @Prop({ enum: ['text', 'image', 'file', 'system'], required: true })
   type: string;
 
-  @Prop()
+  @Prop({ required: true })
   content: string;
 }
 

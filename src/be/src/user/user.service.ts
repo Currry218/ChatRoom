@@ -23,6 +23,13 @@ export class UserService {
     return msg;
   }
 
+  async findByUsername(username: string): Promise<User> {
+    const msg = await this.userModel.findOne({ username }).exec();
+    if (!msg)
+      throw new NotFoundException(`User with username ${username} not found`);
+    return msg;
+  }
+
   async update(id: string, dto: Partial<CreateUserDto>): Promise<User> {
     const updated = await this.userModel
       .findByIdAndUpdate(id, dto, { new: true })

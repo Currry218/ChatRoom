@@ -1,4 +1,3 @@
-// dto/create-user.dto.ts
 import {
   IsEmail,
   IsEnum,
@@ -9,19 +8,19 @@ import {
 
 export class CreateUserDto {
   @IsString()
-  readonly username: string;
+  username: string;
 
   @IsString()
   @MinLength(6)
-  readonly password: string; // should already be hashed before saving
+  password: string; // should already be hashed before saving
 
   @IsOptional()
   @IsString()
-  readonly avatar?: string;
+  avatar?: string;
 
   @IsEmail()
-  readonly email: string;
+  email: string;
 
   @IsEnum(['male', 'female', 'other'])
-  readonly sex: 'male' | 'female' | 'other';
+  sex: 'male' | 'female' | 'other';
 }

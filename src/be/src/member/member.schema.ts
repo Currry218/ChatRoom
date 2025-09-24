@@ -12,6 +12,9 @@ export class Member extends Document {
   @Prop({ enum: ['member', 'admin', 'owner'], default: 'member' })
   role: string;
 
+  @Prop()
+  avatar: string;
+
   @Prop({ default: Date.now })
   joinedAt: Date;
 
