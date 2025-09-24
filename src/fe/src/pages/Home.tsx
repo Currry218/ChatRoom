@@ -1,11 +1,11 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
 const Home = () => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-800 text-white text-center px-4">
+      <div className="flexing-c min-h-screen max-w-screen text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Welcome to Chat Room{" "}
         </h1>
@@ -16,7 +16,7 @@ const Home = () => {
         </p>
         <Link
           to="/chatroom"
-          className="bg-white text-gray-700 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition"
+          className="confirm-button font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition"
         >
           Get Started
         </Link>

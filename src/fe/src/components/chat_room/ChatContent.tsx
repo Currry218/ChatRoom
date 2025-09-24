@@ -1,83 +1,201 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaPhone } from "react-icons/fa6";
 import { BsCameraVideoFill } from "react-icons/bs";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { IoMdSend } from "react-icons/io";
+import axios from "axios";
+import ChatRoomInfo from "./ChatRoomInfo";
 
-const ChatContent = () => {
-  const [messages, setMessages] = useState([]);
+interface Message {
+  _id: string;
+  content: string;
+  messenger: string;
+  createdAt: string;
+}
+interface Member {
+  username: string;
+  avatar: string;
+}
+interface ChatRoom {
+  _id: string;
+  name: string;
+  avatar: string;
+  currentMember: string[];
+}
+
+interface ChatContentProps {
+  roomId: string;
+}
+
+const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [room, setRoom] = useState<ChatRoom | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showRoomInfo, setShowRoomInfo] = useState(false);
+  const [start, setStart] = useState(0);
+  const [end] = useState(25); // page size
   const [input, setInput] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const token = localStorage.getItem("access_token");
+  const currentUser = localStorage.getItem("userId");
+  useEffect(() => {
+    if (!roomId) return;
 
-    // Add new message to list
-    setMessages((prev) => [...prev, { text: input, sender: "me" }]);
-    setInput(""); // clear input
-  };
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const roomRes = await axios.get(
+          `http://localhost:3000/chatroom/${roomId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setRoom(roomRes.data);
+
+        const msgRes = await axios.get(
+          `http://localhost:3000/chatroom/${roomId}/messages?start=${start}&end=${end}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setMessages(msgRes.data);
+
+        const memRes = await axios.get(
+          `http://localhost:3000/member/room/${roomId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setMembers(memRes.data);
+      } catch (err) {
+        console.error("Failed to fetch chat data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [roomId, start, end]);
+
+  const messagesWithMember = messages.map((msg) => {
+    const member = members.find((m) => m.username === msg.messenger);
+    return {
+      ...msg,
+      avatar: member?.avatar,
+      username: member?.username || msg.messenger,
+    };
+  });
+
+  if (!roomId)
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        Select a chat room {roomId}
+      </div>
+    );
 
   return (
-    <div className="flex flex-col min-h-full min-w-full border-r">
-      {/* Header */}
-      <div className="flex items-center gap-3 p-2 border-b border-gray-500 hover:bg-gray-100 cursor-pointer transition">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/4775/4775537.png"
-          alt="room name"
-          className="w-12 h-12 rounded-full object-cover"
-        />
-        <div className="flex flex-col flex-1">
-          <span className="font-semibold text-gray-800">ROOM NAME</span>
-          <span className="text-sm text-gray-500 truncate">jakfjskfj</span>
-        </div>
-        <FaPhone className="w-6 h-6 cursor-pointer" />
-        <BsCameraVideoFill className="w-6 h-6 cursor-pointer" />
-        <AiFillInfoCircle className="w-6 h-6 cursor-pointer" />
-      </div>
-
-      {/* Messages */}
-      <div className="flex-1 p-4 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`mb-2 flex ${
-              msg.sender === "me" ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div
-              className={`px-4 py-2 rounded-lg max-w-xs ${
-                msg.sender === "me"
-                  ? "bg-gray-500 text-white rounded-br-none"
-                  : "bg-gray-300 text-gray-900 rounded-bl-none"
-              }`}
-            >
-              {msg.text}
-            </div>
+    <>
+      <div className="flex flex-row h-[90vh] w-full">
+        <div
+          className={`flex flex-col border-r transition-all duration-300 ${showRoomInfo ? "w-3/4" : "w-full"}`}
+        >
+          {/* Header */}
+          <div className="chat-room-header flex items-center gap-3 p-2 border-b">
+            <img
+              src={room?.avatar}
+              alt={room?.name}
+              className="w-12 h-12 rounded-full object-cover"
+            />
+            <span className="flex-1 font-semibold text-xl truncate">
+              {room?.name}
+            </span>
+            <FaPhone className="w-6 h-6 cursor-pointer" />
+            <BsCameraVideoFill className="w-6 h-6 cursor-pointer" />
+            <AiFillInfoCircle
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => setShowRoomInfo(!showRoomInfo)}
+            />
           </div>
-        ))}
-      </div>
 
-      {/* Input */}
-      <form onSubmit={handleSubmit} className="p-2 border-t bg-white">
-        <div className="relative">
-          <input
-            type="text"
-            id="message"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="block w-full p-4 pe-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
-            placeholder="Type a message..."
-            required
-          />
-          <button
-            type="submit"
-            className="absolute end-2.5 bottom-2.5 text-gray-700 hover:text-gray-800"
-          >
-            <IoMdSend className="w-6 h-6" />
-          </button>
+          {/* Messages */}
+
+          <div className="flex-1 p-4 overflow-y-auto flex flex-col">
+            {/* Load older messages */}
+            <div className="flex justify-center mt-2">
+              <button
+                onClick={() => setStart((prev) => prev + end)}
+                className="text-blue-500 hover:underline text-sm"
+              >
+                Load older messages
+              </button>
+            </div>
+            {loading && (
+              <p className="text-center text-gray-500">Loading messages...</p>
+            )}
+
+            {messagesWithMember.map((msg) => {
+              const isMe = msg.messenger === currentUser;
+              return (
+                <div
+                  key={msg._id}
+                  className={`mb-2 flex ${isMe ? "justify-end" : "justify-start"}`}
+                >
+                  {/* Left side: other users */}
+                  {!isMe && (
+                    <div className="flex items-start gap-2">
+                      <img
+                        className="w-10 h-10 rounded-full object-cover mt-1"
+                        src={msg.avatar}
+                        alt={msg.username}
+                      />
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-gray-700">
+                          {msg.username}
+                        </span>
+                        <div className="bg-gray-200 px-3 py-2 rounded-lg max-w-xs break-words">
+                          {msg.content}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {isMe && (
+                    <div className="bg-blue-500 text-white px-3 py-2 rounded-lg max-w-xs break-words self-end rounded-br-none">
+                      {msg.content}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Input */}
+          <form className="p-2 border-t">
+            <div className="relative">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="block w-full p-4 pe-12 text-sm rounded-lg"
+                placeholder="Type a message..."
+              />
+              <button
+                type="submit"
+                className="absolute end-2.5 bottom-2.5 text-gray-700 hover:text-gray-800"
+              >
+                <IoMdSend className="w-6 h-6" />
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+
+        {/* Right: Room Info */}
+        {showRoomInfo && (
+          <aside className="w-1/4 border-l bg-white h-full overflow-y-auto transition-all duration-300">
+            <ChatRoomInfo room={room} members={members} />
+          </aside>
+        )}
+      </div>
+    </>
   );
 };
 

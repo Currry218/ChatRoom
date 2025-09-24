@@ -1,19 +1,19 @@
-import React from "react";
+
 import ChatContent from "../components/chat_room/ChatContent";
-import ChatRoomInfo from "../components/chat_room/ChatRoomInfo";
 import ChatRoomList from "../components/chat_room/ChatRoomList";
+import { useState } from 'react';
 const ChatRoom = () => {
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
   return (
-    <div className="flex flex-row h-[90vh] w-full ">
+    <div className="flex flex-row h-[90vh] w-full">
+      {/* <h1>{selectedRoom}</h1> */}
       <div className="flex flex-row h-full w-[25vw]">
-        <ChatRoomList />
+       <ChatRoomList setSelectedRoom={setSelectedRoom} />
       </div>
-      <div className="flex flex-row h-full flex-1">
-        <ChatContent />
+      <div className="flex flex-col h-full flex-1">
+        <ChatContent roomId={selectedRoom} />
       </div>
-      <div className="flex flex-row h-full w-[20vw]">
-        <ChatRoomInfo />
-      </div>
+
     </div>
   );
 };
