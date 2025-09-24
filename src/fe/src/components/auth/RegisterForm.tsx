@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
-import avatarOptions from "../../LongArray";
+import { avatarOptions } from "../../LongArray";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}`,
+  baseURL: `${import.meta.env.VITE_API_URL}`,
   withCredentials: true,
 });
 
@@ -49,18 +49,18 @@ const RegisterForm = ({ switchToLogin }: Props) => {
       avatar: "",
       sex: "",
     };
-    
+
     if (!form.username.trim()) newErrors.username = "Username required";
-    
+
     if (form.email && !/\S+@\S+\.\S+/.test(form.email))
       newErrors.email = "Email invalid";
-    
+
     if (!form.password)
       //|| form.password.length < 6)
       newErrors.password = "Password min 6 chars";
-    
-      if (!form.avatar) newErrors.avatar = "Select avatar";
-    
+
+    if (!form.avatar) newErrors.avatar = "Select avatar";
+
     if (!form.sex) newErrors.sex = "Select sex";
     setErrors(newErrors);
     return Object.values(newErrors).every((e) => e === "");
@@ -72,13 +72,13 @@ const RegisterForm = ({ switchToLogin }: Props) => {
     setLoading(true);
     try {
       const res = await api.post("/auth/register", form);
-      
+
       localStorage.setItem("access_token", res.data.access_token);
       localStorage.setItem("refresh_token", res.data.refresh_token);
-      
+
       toast.success("Registration successful!");
       navigate("/");
-      
+
       return res.data.user;
     } catch (err: any) {
       toast.error(err.response?.data || "Registration failed");
@@ -104,9 +104,7 @@ const RegisterForm = ({ switchToLogin }: Props) => {
                 src={src}
                 alt="avatar"
                 className={`w-16 h-16 rounded-full cursor-pointer border-4 transition-all ${
-                  form.avatar === src
-                    ? "border-red-500 "
-                    : "border-transparent"
+                  form.avatar === src ? "border-red-500 " : "border-transparent"
                 }`}
                 onClick={() => handleAvatarSelect(src)}
               />

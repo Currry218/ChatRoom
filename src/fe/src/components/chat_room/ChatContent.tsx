@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { FaPhone } from "react-icons/fa6";
 import { BsCameraVideoFill } from "react-icons/bs";
 import { AiFillInfoCircle } from "react-icons/ai";
-import { IoMdSend } from "react-icons/io";
 import axios from "axios";
 import ChatRoomInfo from "./ChatRoomInfo";
+import { IoChatbubblesSharp } from "react-icons/io5";
+import ChatInput from "./ChatInput";
 
 interface Message {
   _id: string;
@@ -35,10 +36,9 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
   const [showRoomInfo, setShowRoomInfo] = useState(false);
   const [start, setStart] = useState(0);
   const [end] = useState(25); // page size
-  const [input, setInput] = useState("");
 
   const token = localStorage.getItem("access_token");
-  const currentUser = localStorage.getItem("userId");
+  const currentUser = localStorage.getItem("userId") || "";
   useEffect(() => {
     if (!roomId) return;
 
@@ -46,7 +46,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
       setLoading(true);
       try {
         const roomRes = await axios.get(
-          `process.env.REACT_APP_API_URL/chatroom/${roomId}`,
+          `${import.meta.env.VITE_API_URL}/chatroom/${roomId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -54,13 +54,13 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
         setRoom(roomRes.data);
 
         const msgRes = await axios.get(
-          `process.env.REACT_APP_API_URL/chatroom/${roomId}/messages?start=${start}&end=${end}`,
+          `${import.meta.env.VITE_API_URL}/chatroom/${roomId}/messages?start=${start}&end=${end}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setMessages(msgRes.data);
 
         const memRes = await axios.get(
-          `process.env.REACT_APP_API_URL/member/room/${roomId}`,
+          `${import.meta.env.VITE_API_URL}/member/room/${roomId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -84,10 +84,14 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
       username: member?.username || msg.messenger,
     };
   });
+  const handleNewMessage = (msg: any) => {
+    setMessages((prev) => [...prev, msg]); // append new message
+  };
 
   if (!roomId)
     return (
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center">
+        <IoChatbubblesSharp className="w-2xl h-2xl" />
         Select a chat room {roomId}
       </div>
     );
@@ -169,23 +173,11 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
           </div>
 
           {/* Input */}
-          <form className="p-2 border-t">
-            <div className="relative">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="block w-full p-4 pe-12 text-sm rounded-lg"
-                placeholder="Type a message..."
-              />
-              <button
-                type="submit"
-                className="absolute end-2.5 bottom-2.5 text-gray-700 hover:text-gray-800"
-              >
-                <IoMdSend className="w-6 h-6" />
-              </button>
-            </div>
-          </form>
+          <ChatInput
+            roomId={roomId}
+            username={currentUser}
+            onMessageSent={handleNewMessage}
+          />
         </div>
 
         {/* Right: Room Info */}

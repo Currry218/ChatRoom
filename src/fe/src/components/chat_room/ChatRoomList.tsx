@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { IoMdSearch } from "react-icons/io";
 import { BiSolidAddToQueue } from "react-icons/bi";
+import ChatRoomModal from './ChatRoomModal';
 
 interface LatestMessage {
   _id: string;
   roomId: string;
   messenger: string;
   type: string;
-  content:string;
+  content: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -52,15 +53,14 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
   const [showChatRooms, setShowChatRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchRoom, setSearchRoom] = useState("");
-
-  // Fetch chat rooms from backend
+  const [isModalOpen, setModalOpen] = useState(false); // Fetch chat rooms from backend
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
         const token = localStorage.getItem("access_token");
         const uname = localStorage.getItem("userId");
         const res = await axios.get(
-          `process.env.REACT_APP_API_URL/chatroom/chatroom-latest/${uname}`,
+          `${import.meta.env.VITE_API_URL}/chatroom/chatroom-latest/${uname}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -122,12 +122,15 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
 
         {/* Add group button */}
         <button
-          className="p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
+          className="p-3 rounded-lg  hover:bg-gray-300"
           aria-label="Add group"
+          onClick={() => setModalOpen(true)}
         >
           <BiSolidAddToQueue className="w-6 h-6" />
         </button>
       </div>
+
+      <ChatRoomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
 
       {showChatRooms.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-full text-gray-500 p-4">
@@ -142,18 +145,18 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
         <div className="flex flex-col">
           {showChatRooms.map((room) => (
             <div
-             onClick={() => setSelectedRoom(room._id)} 
+              onClick={() => setSelectedRoom(room._id)}
               key={room._id}
-              className="flex items-center gap-3 p-4 border border-gray-50 hover:bg-gray-100 cursor-pointer transition"
+              className="flex items-center gap-3 p-4 border border-gray-50 hover:opacity-70 cursor-pointer transition"
             >
               <img
                 src={room.avatar}
                 alt={room.name}
                 className="w-12 h-12 rounded-full object-cover"
               />
-              <div className="flex flex-col flex-1">
-                <span className="font-semibold text-gray-800">{room.name}</span>
-                <span className="text-sm text-gray-500 line-clamp-1 pe-2">
+              <div className="flex flex-col flex-1 basic">
+                <span className="font-semibold ">{room.name}</span>
+                <span className="text-sm  line-clamp-1 pe-2">
                   {room.latestMessage?.messenger || "No messages yet"}:{" "}
                   {room.latestMessage?.content || ""}
                 </span>

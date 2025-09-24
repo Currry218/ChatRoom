@@ -1,8 +1,9 @@
 import axios from "axios";
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}`,
+  baseURL: `${import.meta.env.VITE_API_URL}`,
 });
 
 interface AuthContextType {
