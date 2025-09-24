@@ -20,7 +20,6 @@ interface ChatRoomInfoProps {
 }
 
 const ChatRoomInfo: React.FC<ChatRoomInfoProps> = ({ room, members }) => {
-  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex flex-col min-h-full min-w-full overflow-x-auto p-4">

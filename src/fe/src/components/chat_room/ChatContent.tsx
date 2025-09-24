@@ -46,7 +46,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
       setLoading(true);
       try {
         const roomRes = await axios.get(
-          `http://localhost:3000/chatroom/${roomId}`,
+          `process.env.REACT_APP_API_URL/chatroom/${roomId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -54,13 +54,13 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
         setRoom(roomRes.data);
 
         const msgRes = await axios.get(
-          `http://localhost:3000/chatroom/${roomId}/messages?start=${start}&end=${end}`,
+          `process.env.REACT_APP_API_URL/chatroom/${roomId}/messages?start=${start}&end=${end}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setMessages(msgRes.data);
 
         const memRes = await axios.get(
-          `http://localhost:3000/member/room/${roomId}`,
+          `process.env.REACT_APP_API_URL/member/room/${roomId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

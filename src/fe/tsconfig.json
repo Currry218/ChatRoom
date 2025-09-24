@@ -9,23 +9,20 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "components/*": [
-        "components/*"
+        "src/components/*"
       ],
       "pages/*": [
-        "pages/*"
+        "src/pages/*"
       ],
       "layouts/*": [
-        "layouts/*"
+        "src/layouts/*"
       ],
       "style/*": [
-        "style/*"
+        "src/style/*"
       ]
     }
-  },
-  "include": [
-    "src"
-  ]
+  }
 }

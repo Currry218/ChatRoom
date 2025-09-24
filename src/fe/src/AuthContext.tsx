@@ -2,7 +2,7 @@ import axios from "axios";
 import { createContext, useState, useEffect, ReactNode } from "react";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: `${process.env.REACT_APP_API_URL}`,
 });
 
 interface AuthContextType {

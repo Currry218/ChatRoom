@@ -8,6 +8,7 @@ interface LatestMessage {
   roomId: string;
   messenger: string;
   type: string;
+  content:string;
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -35,8 +36,8 @@ interface ChatRoom {
   isDirect: boolean;
   currentMember: string[];
   avatar: string;
-  latestMessage: LatestMessage | null;
-  memberInfo: MemberInfo | null;
+  latestMessage: LatestMessage;
+  memberInfo: MemberInfo;
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -59,7 +60,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
         const token = localStorage.getItem("access_token");
         const uname = localStorage.getItem("userId");
         const res = await axios.get(
-          `http://localhost:3000/chatroom/chatroom-latest/${uname}`,
+          `process.env.REACT_APP_API_URL/chatroom/chatroom-latest/${uname}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
