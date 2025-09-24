@@ -8,6 +8,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  console.log("API base:", import.meta.env.VITE_API_URL);
   return (
     <div className="flex flex-col min-h-screen max-w-screen">
       <Header />

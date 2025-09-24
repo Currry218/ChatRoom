@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-import "../style/bubble.css";
+import "../App.css";
 const Home = () => {
   return (
     <>
