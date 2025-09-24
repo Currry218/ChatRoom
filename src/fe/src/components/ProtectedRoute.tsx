@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
+import type { ReactNode } from "react";
 
 interface ProtectedRouteProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
