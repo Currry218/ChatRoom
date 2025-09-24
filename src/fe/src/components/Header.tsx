@@ -2,11 +2,10 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthContext"; // your auth context
 import "../App.css";
-import ThemeSwitch from "./ThemeSwitch";
+// import ThemeSwitch from "./ThemeSwitch";
 
 export default function Header() {
   const { user } = useContext(AuthContext);
-
   return (
     <header className="p-3 flex gap-4 items-center shadow-sm header-des h-[10vh]">
       <div className="flex items-center gap-2">
@@ -25,7 +24,7 @@ export default function Header() {
 
       <div className="flex-1" />
 
-      <ThemeSwitch />
+      {/* <ThemeSwitch /> */}
       
       <div className="flex gap-2 ml-4 items-center">
         {!user ? (

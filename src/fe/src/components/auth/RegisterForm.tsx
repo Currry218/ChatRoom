@@ -3,7 +3,6 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { avatarOptions } from "../../LongArray";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}`,
@@ -31,8 +30,6 @@ const RegisterForm = ({ switchToLogin }: Props) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -77,8 +74,7 @@ const RegisterForm = ({ switchToLogin }: Props) => {
       localStorage.setItem("refresh_token", res.data.refresh_token);
 
       toast.success("Registration successful!");
-      navigate("/");
-
+      window.location.href = "/";
       return res.data.user;
     } catch (err: any) {
       toast.error(err.response?.data || "Registration failed");

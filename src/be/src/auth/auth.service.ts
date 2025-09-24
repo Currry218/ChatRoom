@@ -126,7 +126,7 @@ export class AuthService {
 
   async getProfileInfo(req: any): Promise<any> {
     const user = await this.UsersModel.findOne({ username: req.username })
-      .select('username email password')
+      .select('username email avatar')
       .exec();
 
     return user;

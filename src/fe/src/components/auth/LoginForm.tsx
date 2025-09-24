@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // import { redirect } from "react-router";
 
 const api = axios.create({
@@ -19,9 +19,7 @@ const LoginForm = ({ switchToRegister }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ username: "", password: "" });
-  
-  const navigate = useNavigate();
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -46,7 +44,7 @@ const LoginForm = ({ switchToRegister }: Props) => {
         localStorage.setItem("refresh_token", res.data.refresh_token);
 
         toast.success("Login successful!");
-        navigate("/");
+        window.location.href = "/";
         return res.data.user;
       } else {
         toast.error("Invalid login response");
