@@ -11,7 +11,7 @@ async function bootstrap() {
 
   app.enableCors({
     // origin: configService.get<string>('FRONT_END_URL'),
-    origin: 'https://chat-room-woad-psi.vercel.app/',
+    origin: 'https://chat-room-woad-psi.vercel.app',
     credentials: true,
   });
 
