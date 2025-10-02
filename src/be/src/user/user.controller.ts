@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.schema';
 // import { AuthGuard } from '@nestjs/passport';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -48,7 +49,7 @@ export class UserController {
   // @UseGuards(AuthGuard)
   async update(
     @Param('id') id: string,
-    @Body() dto: Partial<CreateUserDto>,
+    @Body() dto: UpdateUserDto,
   ): Promise<User> {
     return this.userService.update(id, dto);
   }

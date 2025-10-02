@@ -6,6 +6,7 @@ import { Message } from '../message/message.schema';
 import { CreateChatRoomDto } from './dto/create-chatroom.dto';
 import { MemberService } from '../member/member.service';
 import { MessageService } from '../message/message.service';
+import { UpdateChatRoomDto } from './dto/update-chatroom.dto';
 
 @Injectable()
 export class ChatRoomService {
@@ -82,7 +83,7 @@ export class ChatRoomService {
     return this.messageService.findMessagesByRoomId(roomId, start, end);
   }
 
-  async update(id: string, dto: Partial<CreateChatRoomDto>): Promise<ChatRoom> {
+  async update(id: string, dto: UpdateChatRoomDto): Promise<ChatRoom> {
     const updated = await this.chatroomModel
       .findByIdAndUpdate(id, dto, { new: true })
       .exec();

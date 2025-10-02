@@ -15,9 +15,6 @@ export class ChatRoom extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   owner: string; // ref to User
 
-  @Prop()
-  currentMember: string[];
-
   @Prop({ default: false })
   isDirect: boolean;
 }

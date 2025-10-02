@@ -14,9 +14,6 @@ export class CreateChatRoomDto {
   @IsString()
   readonly owner: string; // User.ID
 
-  @IsArray()
-  readonly currentMember: string[]; // Array of User.ID
-
   @IsBoolean()
   readonly isDirect: boolean;
 }

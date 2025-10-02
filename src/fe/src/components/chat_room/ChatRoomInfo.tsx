@@ -8,7 +8,6 @@ interface ChatRoom {
   _id: string;
   name: string;
   avatar: string;
-  currentMember: string[];
   createdAt?: string;
   description?: string;
 }

@@ -55,7 +55,7 @@ export class ChatRoomController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() dto: Partial<CreateChatRoomDto>,
+    @Body() dto: CreateChatRoomDto,
   ): Promise<ChatRoom> {
     return this.chatroomService.update(id, dto);
   }

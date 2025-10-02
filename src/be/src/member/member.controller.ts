@@ -12,6 +12,7 @@ import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { Member } from './member.schema';
 // import { AuthGuard } from '@nestjs/passport';
+import { UpdateMemberDto } from './dto/update-member.dto';
 
 @Controller('member')
 export class MemberController {
@@ -39,12 +40,16 @@ export class MemberController {
   async findOne(@Param('id') id: string): Promise<Member> {
     return this.memberService.findOne(id);
   }
-
+  @Get(':username/all')
+  // @UseGuards(AuthGuard)
+  async findAllMember(@Param('username') username: string): Promise<Member[]> {
+    return this.memberService.findByUsername(username);
+  }
   @Put(':id')
   // @UseGuards(AuthGuard)
   async update(
     @Param('id') id: string,
-    @Body() dto: Partial<CreateMemberDto>,
+    @Body() dto: UpdateMemberDto,
   ): Promise<Member> {
     return this.memberService.update(id, dto);
   }

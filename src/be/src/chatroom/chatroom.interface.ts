@@ -6,7 +6,6 @@ export interface ChatRoom extends Document {
   readonly avatar?: string;
   readonly isPublic: boolean;
   readonly owner: string; // User.ID
-  readonly currentMember: string[];
   readonly isDirect: boolean;
   readonly createdAt: Date;
   readonly updatedAt: Date;

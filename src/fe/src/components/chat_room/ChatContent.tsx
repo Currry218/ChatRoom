@@ -21,7 +21,6 @@ interface ChatRoom {
   _id: string;
   name: string;
   avatar: string;
-  currentMember: string[];
 }
 
 interface ChatContentProps {
@@ -90,9 +89,9 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
 
   if (!roomId)
     return (
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <IoChatbubblesSharp className="w-2xl h-2xl" />
-        Select a chat room {roomId}
+      <div className="flex-1 flex flex-col items-center justify-center text-2xl font-semibold">
+        <IoChatbubblesSharp size={150} />
+        Select a chat room
       </div>
     );
 
@@ -124,14 +123,16 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
 
           <div className="flex-1 p-4 overflow-y-auto flex flex-col">
             {/* Load older messages */}
-            <div className="flex justify-center mt-2">
-              <button
-                onClick={() => setStart((prev) => prev + end)}
-                className="text-blue-500 hover:underline text-sm"
-              >
-                Load older messages
-              </button>
-            </div>
+            {messagesWithMember.length > end && (
+              <div className="flex justify-center mt-2">
+                <button
+                  onClick={() => setStart((prev) => prev + end)}
+                  className="text-indigo-500 hover:underline text-sm"
+                >
+                  Load older messages
+                </button>
+              </div>
+            )}
             {loading && (
               <p className="text-center text-gray-500">Loading messages...</p>
             )}
@@ -163,7 +164,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
                   )}
 
                   {isMe && (
-                    <div className="bg-blue-500 text-white px-3 py-2 rounded-lg max-w-xs break-words self-end rounded-br-none">
+                    <div className="bg-indigo-500 text-white px-3 py-2 rounded-lg max-w-xs break-words self-end rounded-br-none">
                       {msg.content}
                     </div>
                   )}

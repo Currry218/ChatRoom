@@ -2,7 +2,7 @@
 import "../style/notfound.css";
 const NotFound = () => {
   return (
-    <div className="justify-center bg-white">
+    <div className="justify-center">
       <div className="wrapper flex flex-col items-center justify-center ">
         <svg
           xmlns="http://www.w3.org/2000/svg"

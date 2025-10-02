@@ -74,10 +74,13 @@ const RegisterForm = ({ switchToLogin }: Props) => {
       localStorage.setItem("refresh_token", res.data.refresh_token);
 
       toast.success("Registration successful!");
-      window.location.href = "/";
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+
       return res.data.user;
     } catch (err: any) {
-      toast.error(err.response?.data || "Registration failed");
+      toast.error(err.response.data?.message || "Registration failed");
       return null;
     } finally {
       setLoading(false);
@@ -86,8 +89,8 @@ const RegisterForm = ({ switchToLogin }: Props) => {
 
   return (
     <div className="w-full max-w-md shadow-lg rounded-2xl p-8 form-modal">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <h2 className="text-2xl font-semibold mb-2 text-center">Register</h2>
+      <form className="space-y-3" onSubmit={handleSubmit}>
         {/* Avatar Picker */}
         <div>
           <label className="block text-sm font-medium mb-1">
@@ -151,9 +154,9 @@ const RegisterForm = ({ switchToLogin }: Props) => {
               onChange={(e) => handleGenderSelect(e.target.value)}
               className="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300"
             >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
             {errors.sex && <p className="text-red-500 text-sm">{errors.sex}</p>}
           </div>

@@ -69,7 +69,7 @@ const LoginForm = ({ switchToRegister }: Props) => {
             name="username"
             value={form.username}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300"
+            className="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-indigo-300"
           />
           {errors.username && (
             <p className="text-red-500 text-sm">{errors.username}</p>
@@ -84,7 +84,7 @@ const LoginForm = ({ switchToRegister }: Props) => {
               name="password"
               value={form.password}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300 pr-10"
+              className="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-indigo-300 pr-10"
             />
             <button
               type="button"
@@ -109,7 +109,7 @@ const LoginForm = ({ switchToRegister }: Props) => {
           className={`w-full py-2 rounded-lg text-white transition ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              : "bg-indigo-600 hover:bg-indigo-700"
           }`}
         >
           {loading ? "Please wait..." : "Login"}
@@ -119,7 +119,7 @@ const LoginForm = ({ switchToRegister }: Props) => {
       <p className="mt-4 text-center text-sm text-gray-600">
         Don’t have an account?{" "}
         <button
-          className="text-blue-600 font-semibold"
+          className="text-indigo-600 font-semibold"
           onClick={switchToRegister}
         >
           Register

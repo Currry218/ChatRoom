@@ -3,9 +3,15 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthContext"; // your auth context
 import "../App.css";
 // import ThemeSwitch from "./ThemeSwitch";
+import { GrLogout } from "react-icons/gr";
 
 export default function Header() {
   const { user } = useContext(AuthContext);
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    window.location.href = "/auth";
+  }
   return (
     <header className="p-3 flex gap-4 items-center shadow-sm header-des h-[10vh]">
       <div className="flex items-center gap-2">
@@ -25,7 +31,7 @@ export default function Header() {
       <div className="flex-1" />
 
       {/* <ThemeSwitch /> */}
-      
+
       <div className="flex gap-2 ml-4 items-center">
         {!user ? (
           <Link to="/auth" className="px-2 py-1">
@@ -41,7 +47,10 @@ export default function Header() {
               alt="avatar"
               className="w-6 h-6 rounded-full object-cover"
             />
-            <div className="px-2">{user.username}</div>
+            <div className="">{user.username}</div>
+            <span className="px-2 cursor-pointer" title="Logout" onClick={handleLogout}>
+              <GrLogout />
+            </span>
           </>
         )}
       </div>

@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Member } from './member.schema';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UserService } from '../user/user.service';
+import { UpdateMemberDto } from './dto/update-member.dto';
 
 @Injectable()
 export class MemberService {
@@ -13,14 +14,12 @@ export class MemberService {
   ) {}
 
   async create(dto: CreateMemberDto): Promise<Member> {
-    // fetch user info
     const user = await this.userService.findByUsername(dto.username);
     if (!user) {
       throw new NotFoundException(`User ${dto.username} not found`);
     }
 
-    // build member with user info
-    const member = new this.memberModel({
+    const member = await new this.memberModel({
       roomId: dto.roomId,
       username: dto.username,
       avatar: user.avatar,
@@ -50,7 +49,7 @@ export class MemberService {
     return this.memberModel.find({ roomId }).lean().exec();
   }
 
-  async update(id: string, dto: Partial<CreateMemberDto>): Promise<Member> {
+  async update(id: string, dto: UpdateMemberDto): Promise<Member> {
     const updated = await this.memberModel
       .findByIdAndUpdate(id, dto, { new: true })
       .exec();

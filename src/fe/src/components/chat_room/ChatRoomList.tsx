@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { IoMdSearch } from "react-icons/io";
 import { BiSolidAddToQueue } from "react-icons/bi";
-import ChatRoomModal from './ChatRoomModal';
+import ChatRoomModal from "./ChatRoomModal";
+import "../../style/loader.css";
 
 interface LatestMessage {
   _id: string;
@@ -35,7 +36,6 @@ interface ChatRoom {
   owner: string;
   isPublic: boolean;
   isDirect: boolean;
-  currentMember: string[];
   avatar: string;
   latestMessage: LatestMessage;
   memberInfo: MemberInfo;
@@ -91,14 +91,14 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        Loading chat rooms...
+      <div className="flex flex-col items-center justify-center h-full min-w-full border-e-2 overflow-y-auto  text-xl font-semibold">
+        Loading chat rooms<div className="loader"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full min-w-full border-e-2 overflow-y-auto">
+    <div className="flex flex-col h-full min-w-full border-e-2 ">
       {/* SEARCH BAR */}
       <div className="flex items-center gap-1 m-2">
         <div className="flex-1">
@@ -115,7 +115,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
               value={searchRoom}
               onChange={(e) => setSearchRoom(e.target.value)}
               placeholder="Search for current chat room"
-              className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
         </div>
@@ -131,40 +131,41 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
       </div>
 
       <ChatRoomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
-
-      {showChatRooms.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full text-gray-500 p-4">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/3468/3468489.png"
-            alt="no rooms"
-            className="w-24 h-24 mb-4 opacity-70"
-          />
-          <p>No chat rooms available</p>
-        </div>
-      ) : (
-        <div className="flex flex-col">
-          {showChatRooms.map((room) => (
-            <div
-              onClick={() => setSelectedRoom(room._id)}
-              key={room._id}
-              className="flex items-center gap-3 p-4 border border-gray-50 hover:opacity-70 cursor-pointer transition"
-            >
-              <img
-                src={room.avatar}
-                alt={room.name}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div className="flex flex-col flex-1 basic">
-                <span className="font-semibold ">{room.name}</span>
-                <span className="text-sm  line-clamp-1 pe-2">
-                  {room.latestMessage?.messenger || "No messages yet"}:{" "}
-                  {room.latestMessage?.content || ""}
-                </span>
+      <div className="overflow-y-auto">
+        {showChatRooms.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-gray-500 p-4">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3468/3468489.png"
+              alt="no rooms"
+              className="w-24 h-24 mb-4 opacity-70"
+            />
+            <p>No chat rooms available</p>
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            {showChatRooms.map((room) => (
+              <div
+                onClick={() => setSelectedRoom(room._id)}
+                key={room._id}
+                className="flex items-center gap-3 p-4 border border-gray-50 hover:opacity-70 cursor-pointer transition"
+              >
+                <img
+                  src={room.avatar}
+                  alt={room.name}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div className="flex flex-col flex-1 basic">
+                  <span className="font-semibold ">{room.name}</span>
+                  <span className="text-sm  line-clamp-1 pe-2">
+                    {room.latestMessage?.messenger || "No messages yet"}{room.latestMessage?.messenger && ":"}{" "}
+                    {room.latestMessage?.content || ""}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

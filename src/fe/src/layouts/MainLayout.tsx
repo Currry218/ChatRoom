@@ -13,7 +13,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <div className="flex flex-col min-h-screen max-w-screen">
       <Header />
       <main className="flex-1 h-full ">{children}</main>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={1500} />
     </div>
   );
 };

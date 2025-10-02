@@ -12,6 +12,7 @@ import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { Message } from './message.schema';
 // import { AuthGuard } from '@nestjs/passport';
+import { UpdateMessageDto } from './dto/update-message.dto.ts';
 
 @Controller('message')
 export class MessageController {
@@ -45,7 +46,7 @@ export class MessageController {
   // @UseGuards(AuthGuard)
   async update(
     @Param('id') id: string,
-    @Body() dto: Partial<CreateMessageDto>,
+    @Body() dto: UpdateMessageDto,
   ): Promise<Message> {
     return this.messageService.update(id, dto);
   }

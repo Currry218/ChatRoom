@@ -7,6 +7,8 @@ import AuthPage from "./pages/Auth";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { useEffect } from "react";
 import "./App.css";
+import NotFound from './pages/NotFound';
+
 function App() {
   useEffect(() => {
     document.documentElement.setAttribute(
@@ -30,6 +32,7 @@ function App() {
               }
             />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </MainLayout>
       </Router>

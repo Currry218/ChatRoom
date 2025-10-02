@@ -14,12 +14,20 @@ interface ChatRoom {
   avatar: string;
   isPublic: boolean;
   owner: string;
-  currentMember: string[];
   createdAt: string;
   updatedAt: string;
   isDirect: boolean;
 }
-
+interface Member {
+  _id: string;
+  roomId: string; // ChatRoom.id
+  username: string; // User.username
+  role: "member" | "admin" | "owner";
+  joinedAt: string;
+  isNotHere: boolean;
+  lastSeenMsgId?: string; // Message.id
+  lastSeenAt?: string;
+}
 const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<"create" | "join">("create");
 
@@ -33,6 +41,8 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [publicRooms, setPublicRooms] = useState<ChatRoom[]>([]);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const username = localStorage.getItem("userId");
+  const [userMembers, setUserMembers] = useState<Member[]>([]);
+  const joinedRoomIds = new Set(userMembers.map((m) => m.roomId));
 
   // Fetch public rooms when opening "Join" tab
   useEffect(() => {
@@ -52,7 +62,26 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           setPublicRooms([]);
         }
       };
+      const fetchUserMember = async () => {
+        try {
+          const token = localStorage.getItem("access_token");
+          const username = localStorage.getItem("userId");
+          const res = await axios.get<Member[]>(
+            `${import.meta.env.VITE_API_URL}/member/${username}/all`, // <-- assuming your API has this route
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setUserMembers(res.data);
+          console.log("MEMBER?ALL", res.data);
+        } catch (err) {
+          console.error("Failed to fetch user memberships:", err);
+          setUserMembers([]);
+        }
+      };
+
       fetchPublicRooms();
+      fetchUserMember();
     }
   }, [activeTab]);
 
@@ -68,7 +97,6 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           avatar: avatar,
           isPublic: !isPrivate,
           owner: username,
-          currentMember: [],
           isDirect: false,
         },
         {
@@ -92,12 +120,14 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
     try {
       const token = localStorage.getItem("access_token");
+      const username = localStorage.getItem("userId");
       await axios.post(
         `${import.meta.env.VITE_API_URL}/member`,
-        { roomId: targetRoomId },
+        { roomId: targetRoomId, username: username, role: "member" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       onClose();
+      setActiveTab("create");
     } catch (err) {
       console.error("Failed to join room:", err);
     }
@@ -211,12 +241,7 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </p>
                   ) : (
                     publicRooms
-                      .filter(
-                        (room) =>
-                          !room.currentMember.some(
-                            (member) => member === username
-                          )
-                      )
+                      .filter((room) => !joinedRoomIds.has(room._id))
                       .map((room) => (
                         <div
                           key={room._id}
@@ -232,9 +257,6 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         >
                           <img src={room.avatar} className="w-10" />
                           <span>{room.name}</span>
-                          <span className="text-xs text-gray-500">
-                            {room.currentMember.length} members
-                          </span>
                         </div>
                       ))
                   )}

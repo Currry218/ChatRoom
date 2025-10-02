@@ -95,7 +95,7 @@ export const avatarOptions = [
   "https://cdn-icons-png.flaticon.com/512/6273/6273584.png",
   "https://cdn-icons-png.flaticon.com/512/4775/4775480.png",
   "https://cdn-icons-png.flaticon.com/512/4775/4775490.png",
-]; // replace with your avatar images
+]; 
 
 export const chatRoomAvatarOptions = [
   "https://cdn-icons-png.flaticon.com/512/2885/2885648.png",

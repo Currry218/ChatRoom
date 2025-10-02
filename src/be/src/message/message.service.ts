@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Message } from './message.schema';
 import { CreateMessageDto } from './dto/create-message.dto';
+import { UpdateMessageDto } from './dto/update-message.dto.ts';
 
 @Injectable()
 export class MessageService {
@@ -44,7 +45,7 @@ export class MessageService {
       .exec();
   }
 
-  async update(id: string, dto: Partial<CreateMessageDto>): Promise<Message> {
+  async update(id: string, dto: UpdateMessageDto): Promise<Message> {
     const updated = await this.messageModel
       .findByIdAndUpdate(id, dto, { new: true })
       .exec();
