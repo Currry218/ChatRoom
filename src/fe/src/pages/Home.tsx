@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <>
       <div
-        className="flexing-c min-h-screen w-screen text-center relative overflow-x-hidden "
+        className="flexing-c min-h-screen w-full text-center relative overflow-x-hidden "
         style={{
           backgroundPosition: "left 70%",
           backgroundImage:

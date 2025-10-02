@@ -10,7 +10,7 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   console.log("API base:", import.meta.env.VITE_API_URL);
   return (
-    <div className="flex flex-col min-h-screen max-w-screen">
+    <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1 h-full ">{children}</main>
       <ToastContainer position="top-right" autoClose={1500} />

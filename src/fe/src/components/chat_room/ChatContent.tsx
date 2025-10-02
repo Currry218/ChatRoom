@@ -84,7 +84,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
     };
   });
   const handleNewMessage = (msg: any) => {
-    setMessages((prev) => [...prev, msg]); // append new message
+    setMessages((prev) => [...prev, msg]); 
   };
 
   if (!roomId)
@@ -127,7 +127,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ roomId }) => {
               <div className="flex justify-center mt-2">
                 <button
                   onClick={() => setStart((prev) => prev + end)}
-                  className="text-indigo-500 hover:underline text-sm"
+                  className="text-neutral-500 hover:underline text-sm"
                 >
                   Load older messages
                 </button>

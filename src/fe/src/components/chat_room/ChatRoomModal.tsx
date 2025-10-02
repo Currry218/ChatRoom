@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { chatRoomAvatarOptions } from "../../LongArray";
+import { chatRoomAvatarOptions } from "../../constants/ChatRoomAvatar.ts";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -20,12 +20,12 @@ interface ChatRoom {
 }
 interface Member {
   _id: string;
-  roomId: string; // ChatRoom.id
-  username: string; // User.username
+  roomId: string; 
+  username: string; 
   role: "member" | "admin" | "owner";
   joinedAt: string;
   isNotHere: boolean;
-  lastSeenMsgId?: string; // Message.id
+  lastSeenMsgId?: string;
   lastSeenAt?: string;
 }
 const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
@@ -67,7 +67,7 @@ const ChatRoomModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           const token = localStorage.getItem("access_token");
           const username = localStorage.getItem("userId");
           const res = await axios.get<Member[]>(
-            `${import.meta.env.VITE_API_URL}/member/${username}/all`, // <-- assuming your API has this route
+            `${import.meta.env.VITE_API_URL}/member/${username}/all`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }

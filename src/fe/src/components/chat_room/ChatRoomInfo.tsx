@@ -1,4 +1,4 @@
-
+import { toast } from 'react-toastify';
 interface Member {
   username: string;
   avatar: string;
@@ -18,7 +18,10 @@ interface ChatRoomInfoProps {
 }
 
 const ChatRoomInfo: React.FC<ChatRoomInfoProps> = ({ room, members }) => {
-
+  const handleInvite = () => {
+    navigator.clipboard.writeText(room._id);
+    toast.success("Room Id copied to clipboard!");
+  }
   return (
     <div className="flex flex-col min-h-full min-w-full overflow-x-auto p-4">
       {/* Avatar + Name */}
@@ -65,9 +68,19 @@ const ChatRoomInfo: React.FC<ChatRoomInfoProps> = ({ room, members }) => {
       </div>
 
       {/* Actions */}
-      <div className="flex flex-row gap-2">
-        <button className="px-4 py-2 rounded border">Invite Member</button>
-        <button className="px-4 py-2 rounded border">Leave Room</button>
+      <div className="flex flex-row justify-between">
+        <button
+          className="text-indigo-600 font-semibold px-3 py-2 rounded border cursor-pointer"
+          onClick={handleInvite}
+        >
+          Invite Member
+        </button>
+        <button
+          className="text-indigo-900 font-semibold px-3 py-2 rounded border cursor-pointer"
+          // onClick={}
+        >
+          Leave Room
+        </button>{" "}
       </div>
     </div>
   );

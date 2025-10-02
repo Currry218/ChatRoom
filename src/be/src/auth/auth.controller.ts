@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { User } from '../user/user.schema';
+// import { User } from '../user/user.schema';
 import { loginUserDTO } from './dto/login-user.dto';
 import { registerUserDTO } from './dto/register-user.dto';
 
@@ -38,15 +38,15 @@ export class AuthController {
     return this.authService.getProfileInfo(req.user);
   }
 
-  @Post('changePassword')
-  changePassword(@Body() req: any): Promise<any> {
-    console.log(req);
-    return this.authService.changePassword(req);
-  }
+  // @Post('changePassword')
+  // changePassword(@Body() req: any): Promise<any> {
+  //   console.log(req);
+  //   return this.authService.changePassword(req);
+  // }
 
-  @Post('createPassword')
-  createPassword(@Body() req: any): Promise<any> {
-    console.log(req);
-    return this.authService.createPassword(req);
-  }
+  // @Post('createPassword')
+  // createPassword(@Body() req: any): Promise<any> {
+  //   console.log(req);
+  //   return this.authService.createPassword(req);
+  // }
 }

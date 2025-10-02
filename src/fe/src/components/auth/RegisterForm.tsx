@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
-import { avatarOptions } from "../../LongArray";
+import { avatarOptions } from "../../constants/UserAvatar.ts";
 import { toast } from "react-toastify";
 import axios from "axios";
 

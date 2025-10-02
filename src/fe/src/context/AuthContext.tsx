@@ -34,12 +34,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // attach token in Authorization header
       const res = await api.get("/auth/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       localStorage.setItem("userId", res.data.username);
-      setUser(res.data); // depends on what your backend returns
+      setUser(res.data); 
     } catch (err) {
       setUser(null);
     } finally {

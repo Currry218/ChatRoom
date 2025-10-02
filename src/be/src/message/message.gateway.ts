@@ -1,25 +1,33 @@
-// import {
-//   WebSocketGateway,
-//   SubscribeMessage,
-//   MessageBody,
-//   WebSocketServer,
-// } from '@nestjs/websockets';
-// import { Server } from 'socket.io';
-// import { MessageService } from './message.service';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  MessageBody,
+  ConnectedSocket,
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 
-// @WebSocketGateway({ cors: true }) // enable CORS for testing
-// export class MessagesGateway {
-//   @WebSocketServer()
-//   server: Server;
+@WebSocketGateway({
+  cors: {
+    origin: process.env.FRONT_END_URL,
+    credentials: true,
+  },
+})
+export class MessageGateway {
+  @WebSocketServer()
+  server: Server;
 
-//   constructor(private readonly messagesService: MessageService) {}
+  @SubscribeMessage('sendMessage')
+  handleMessage(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    // Broadcast to room
+    this.server.to(data.roomId).emit('newMessage', data);
+  }
 
-//   @SubscribeMessage('sendMessage')
-//   async handleMessage(@MessageBody() payload: { user: string; text: string }) {
-//     const savedMsg = await this.messagesService.create(
-//       payload.user,
-//       payload.text,
-//     );
-//     this.server.emit('newMessage', savedMsg); // broadcast to all clients
-//   }
-// }
+  @SubscribeMessage('joinRoom')
+  handleJoinRoom(
+    @MessageBody() roomId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    client.join(roomId);
+  }
+}

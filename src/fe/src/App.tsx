@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import ChatRoom from "./pages/ChatRoom";
 import AuthPage from "./pages/Auth";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { PublicRoute } from "./routes/PublicRoute";
 import { useEffect } from "react";
 import "./App.css";
-import NotFound from './pages/NotFound';
+import NotFound from "./pages/NotFound";
 
 function App() {
   useEffect(() => {
@@ -31,7 +32,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route
+              path="/auth"
+              element={
+                <PublicRoute>
+                  <AuthPage />
+                </PublicRoute>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </MainLayout>

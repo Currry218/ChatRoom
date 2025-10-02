@@ -53,7 +53,8 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ setSelectedRoom }) => {
   const [showChatRooms, setShowChatRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchRoom, setSearchRoom] = useState("");
-  const [isModalOpen, setModalOpen] = useState(false); // Fetch chat rooms from backend
+  const [isModalOpen, setModalOpen] = useState(false); 
+
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {

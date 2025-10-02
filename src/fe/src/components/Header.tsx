@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../AuthContext"; // your auth context
+import { AuthContext } from "../context/AuthContext"; 
 import "../App.css";
 // import ThemeSwitch from "./ThemeSwitch";
 import { GrLogout } from "react-icons/gr";

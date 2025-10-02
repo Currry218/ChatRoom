@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Message, MessageSchema } from './message.schema';
 import { MessageService } from './message.service';
 import { MessageController } from './message.controller';
-// import { MessagesGateway } from './message.gateway';
+import { MessageGateway } from './message.gateway';
 import { ChatRoomModule } from '../chatroom/chatroom.module';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
@@ -17,7 +17,7 @@ import { MemberModule } from '../member/member.module';
     forwardRef(() => AuthModule),
     forwardRef(() => ChatRoomModule),
   ],
-  providers: [MessageService],
+  providers: [MessageService, MessageGateway],
   controllers: [MessageController],
   exports: [MessageService], //MessagesGateway],
 })

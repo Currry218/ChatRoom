@@ -132,39 +132,39 @@ export class AuthService {
     return user;
   }
 
-  async changePassword(req: any): Promise<any> {
-    const user = await this.UsersModel.findOne({ email: req.email })
-      .select('password')
-      .exec();
-    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  // async changePassword(req: any): Promise<any> {
+  //   const user = await this.UsersModel.findOne({ email: req.email })
+  //     .select('password')
+  //     .exec();
+  //   if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
-    const isMatch = await bcrypt.compare(req.currentPassword, user.password);
-    if (user.password && !isMatch) {
-      throw new HttpException(
-        'Current password is incorrect',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+  //   const isMatch = await bcrypt.compare(req.currentPassword, user.password);
+  //   if (user.password && !isMatch) {
+  //     throw new HttpException(
+  //       'Current password is incorrect',
+  //       HttpStatus.BAD_REQUEST,
+  //     );
+  //   }
 
-    const hashedNewPassword = await this.hashPassword(req.newPassword);
-    await this.UsersModel.findOneAndUpdate(
-      { email: req.email },
-      { password: hashedNewPassword },
-    );
-    return;
-  }
+  //   const hashedNewPassword = await this.hashPassword(req.newPassword);
+  //   await this.UsersModel.findOneAndUpdate(
+  //     { email: req.email },
+  //     { password: hashedNewPassword },
+  //   );
+  //   return;
+  // }
 
-  async createPassword(req: any): Promise<any> {
-    const user = await this.UsersModel.findOne({ email: req.email })
-      .select('password')
-      .exec();
-    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  // async createPassword(req: any): Promise<any> {
+  //   const user = await this.UsersModel.findOne({ email: req.email })
+  //     .select('password')
+  //     .exec();
+  //   if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
-    const hashedNewPassword = await this.hashPassword(req.newPassword);
-    await this.UsersModel.findOneAndUpdate(
-      { email: req.email },
-      { password: hashedNewPassword },
-    );
-    return;
-  }
+  //   const hashedNewPassword = await this.hashPassword(req.newPassword);
+  //   await this.UsersModel.findOneAndUpdate(
+  //     { email: req.email },
+  //     { password: hashedNewPassword },
+  //   );
+  //   return;
+  // }
 }
